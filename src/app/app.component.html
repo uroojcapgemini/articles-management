@@ -1,0 +1,140 @@
+<div class="grid-container">
+  <div class="column-one">
+    <div class="container">
+
+  <input type="text" [formControl]="searchControl" placeholder="Search Title..." style="width: 100%;">
+    <div *ngIf="searchResults">
+      <p *ngFor="let result of searchResults">{{ result.title }}</p>
+    </div>
+  <h1 class="title"></h1>
+
+
+  <!-- <p>Counter: {{ (stateService.counter$ | async) }}</p>
+  <button (click)="stateService.increment()">Increment</button>
+  <button (click)="stateService.decrement()">Decrement</button> -->
+
+
+  <ul class="list" role="list" *ngIf="list.length">
+    <li
+      *ngFor="let item of list; let i = index; trackBy: trackByIndex"
+      class="list-item"
+      [class.dragging]="draggedIndex === i"
+      [class.drag-over]="dragOverIndex === i"
+      draggable="true"
+      (dragstart)="onDragStart(i, $event)"
+      (dragover)="onDragOver(i, $event)"
+      (dragleave)="onDragLeave(i)"
+      (drop)="onDrop(i, $event)"
+      (dragend)="onDragEnd()"
+    >
+    <div>
+      <div style="padding-bottom: .5rem;" >
+        <span class="grip" aria-hidden="true">⋮⋮</span>
+        <span class="label" style="padding-left: 5px;    font-weight: 500;">{{ item.title }}</span>
+      </div>
+      <div class="author-publish ">
+      <div class="left-div">{{item.author}}</div>
+      <div class="right-div">Published: {{item?.publishedDate | date}}</div>
+    </div>
+       <div style="padding-left: 1rem;">
+          <span style="font-size: 14px;">{{item.description}}</span>
+       </div>
+    </div>
+      
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class="column-two">
+    <div class="form-container">
+  <h2>Add New Article</h2>
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Title</label>
+      <input type="text" formControlName="title" />
+      <small
+        class="error"
+        *ngIf="f.title.touched && f.title.errors?.['required']"
+      >
+        title is required
+      </small>
+      <small
+        class="error"
+        *ngIf="f.title.touched && f.title.errors?.['minlength']"
+      >
+        title must be at least 3 characters
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Tag</label>
+      <input type="text" formControlName="tag" />
+      <small class="error" *ngIf="f.tag.touched && f.tag.errors?.['required']">
+        tag is required
+      </small>
+      <small class="error" *ngIf="f.tag.touched && f.tag.errors?.['tag']">
+        Invalid tag format
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label>Author</label>
+      <input type="text" formControlName="author" />
+      <small
+        class="error"
+        *ngIf="f.author.touched && f.author.errors?.['required']"
+      >
+        author is required
+      </small>
+      <small
+        class="error"
+        *ngIf="f.author.touched && f.author.errors?.['minlength']"
+      >
+        author must be at least 3 characters
+      </small>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea type="text" formControlName="description" rows="4"></textarea>
+      <small
+        class="error"
+        *ngIf="f.description.touched && f.description.errors?.['required']"
+      >
+        description is required
+      </small>
+    </div>
+
+    <div class="form-group">
+      <label>Published Date</label>
+      <input type="date" formControlName="publishedDate" />
+    </div>
+    
+    <div style="text-align: center;
+    padding: .5rem" id="openDialog"><span style="cursor: pointer;text-decoration: underline;
+    color: blue" (click)="previewArticle()">Preview Article</span></div>
+    <button type="submit" >Submit</button>
+  </form>
+</div>
+  </div>
+</div>
+<div style="text-align: center;
+    padding: 2rem">
+  <button (click)="resetApplication()" style="cursor: pointer;text-decoration: underline;
+    color: blue">Reset Application</button>
+</div>
+<dialog id="myDialog" style="width: 40rem;">
+      <h2>{{myForm.get('title')?.value}}</h2>
+      <p>{{myForm.get('description')?.value}}</p>
+      <div>
+      <label style="font-size: 12px;">Author: {{myForm.get('author')?.value}}</label>
+      </div>
+      <div>
+      <span style="font-size: 12px;">{{myForm.get('publishedDate')?.value}}</span>
+      </div>
+      <div style="display: block;
+    text-align: right;">
+<button id="closeDialog" style="width: 4rem;
+    font-size: 12px;">Close</button>
+      </div>
+      
+    </dialog>
+<router-outlet />
