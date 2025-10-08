@@ -3,14 +3,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class StateService {
-  private _counter = new BehaviorSubject<number>(0);
-  public readonly counter$: Observable<number> = this._counter.asObservable();
+  private article = new BehaviorSubject<string>('');
+  dragableValue = this.article.asObservable();
 
-  increment() {
-    this._counter.next(this._counter.value + 1);
+  getArticle(dragableArticle: string) {
+    this.article.next(dragableArticle);
   }
 
-  decrement() {
-    this._counter.next(this._counter.value - 1);
-  }
+  // decrement() {
+  //   this._counter.next(this._counter.value - 1);
+  // }
 }

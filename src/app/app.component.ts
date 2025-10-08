@@ -5,10 +5,11 @@ import { NgFor, NgIf } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormControl  } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { StateService } from './state.service';
+import { OtherComponent } from "./other/other.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgFor, ReactiveFormsModule, NgIf, CommonModule],
+  imports: [RouterOutlet, NgFor, ReactiveFormsModule, NgIf, CommonModule, OtherComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -43,6 +44,7 @@ export class AppComponent {
   myForm: FormGroup;
   searchControl = new FormControl();
   searchResults: any[] = [];
+  drableArticle: string = '';
 
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef, public stateService: StateService) {
     this.myForm = this.fb.group({
@@ -91,7 +93,7 @@ export class AppComponent {
 
   ngOnInit() {
     
-
+    this.stateService.dragableValue.subscribe(article => this.drableArticle = article)
     this.searchControl.valueChanges.pipe(
       debounceTime(100),
     ).subscribe(
@@ -137,6 +139,9 @@ export class AppComponent {
     }
   }
   onDragStart(index: number, ev: DragEvent){
+    this.drableArticle = this.list[index].title
+    console.log(this.drableArticle)
+    this.stateService.getArticle(this.drableArticle);
     this.draggedIndex = index;
     ev.dataTransfer?.setData('text/plain', String(index));
     ev.dataTransfer?.setDragImage(this.makeGhost(ev), 10, 10);
