@@ -1,1 +1,3 @@
-<h3>{{article}}</h3>
+<h3 class="title" *ngIf="article" appShared>Last Dragged Article: {{article}}</h3>
+<h3 class="title" *ngIf="!article">No article Dragged</h3>
+

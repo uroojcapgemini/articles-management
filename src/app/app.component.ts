@@ -92,8 +92,8 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    
-    this.stateService.dragableValue.subscribe(article => this.drableArticle = article)
+    this.drableArticle = ''
+    // this.stateService.dragableValue.subscribe(article => this.drableArticle = article)
     this.searchControl.valueChanges.pipe(
       debounceTime(100),
     ).subscribe(
@@ -191,6 +191,7 @@ export class AppComponent {
   private clearDragState(){
     this.dragOverIndex = null;
     this.draggedIndex = null;
+    // this.stateService.getArticle('');
   }
 
   private makeGhost(ev: DragEvent){
